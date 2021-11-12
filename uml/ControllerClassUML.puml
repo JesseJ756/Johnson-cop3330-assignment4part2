@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class Controller
+{
+    - TableView<TodoTask> taskTable;
+    - TableColumn<TodoTask, String> taskTitle;
+    - TextField titleText;
+
+    + newItemButtonPushed(javafx.event.ActionEvent event): void
+    + addTaskButtonPushed(javafx.event.ActionEvent event): void
+    + initialize(URL url, ResourceBundle rb): void
+    + getTasks(): ObservableList<TodoTask>
+}
+
+@enduml

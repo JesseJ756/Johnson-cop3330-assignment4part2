@@ -1,0 +1,34 @@
+@startuml
+class TodoList
+{
+    {static} main(): void
+    start(Stage primaryStage): void
+}
+
+class Controller
+{
+    - TableView<TodoTask> taskTable;
+    - TableColumn<TodoTask, String> taskTitle;
+    - TextField titleText;
+
+    + newItemButtonPushed(javafx.event.ActionEvent event): void
+    + addTaskButtonPushed(javafx.event.ActionEvent event): void
+    + initialize(URL url, ResourceBundle rb): void
+    + getTasks(): ObservableList<TodoTask>
+}
+
+class TodoTask
+{
+        - String trueString = "true"
+        - SimpleStringProperty title
+
+        + TodoTask(String title)
+        + getTitle(): String
+        + titleProperty(): SimpleStringProperty
+        + setTitle(String title): void
+}
+
+TodoList -> Controller
+Controller -> TodoTask
+
+@enduml

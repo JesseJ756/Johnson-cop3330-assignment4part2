@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class TodoTask
+{
+        - String trueString = "true"
+        - SimpleStringProperty title
+
+        + TodoTask(String title)
+        + getTitle(): String
+        + titleProperty(): SimpleStringProperty
+        + setTitle(String title): void
+}
+
+@enduml
