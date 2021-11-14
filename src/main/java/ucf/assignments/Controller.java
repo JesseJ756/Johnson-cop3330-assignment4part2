@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Fall 2021 Assignment 4 Solution
+ *  Copyright 2021 Jesse Johnson
+ */
+
 package ucf.assignments;
 
 import javafx.collections.FXCollections;
@@ -8,24 +13,32 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable
 {
-    @FXML private TableView<TodoTask> taskTable;
-    @FXML private TableColumn<TodoTask, String> taskTitle;
+    @FXML private TableView<TableviewList> listTable;
+    @FXML private TableColumn<TableviewList, String> listDescriptionColumn;
+    @FXML private TableColumn<TableviewList, String> listStatusColumn;
+    @FXML private TableColumn<TableviewList, LocalDate> listDueDateColumn;
+
 
     @FXML private TextField titleText;
+
+    @FXML private TextArea textDescriptionTextField;
+    @FXML private DatePicker dueDateTextField;
+
+    @FXML private Button newItemButton;
 
 
     public void newListButtonPushed(javafx.event.ActionEvent event) throws IOException
@@ -103,8 +116,9 @@ public class Controller implements Initializable
 
     public void addTaskButtonPushed(javafx.event.ActionEvent event) throws IOException
     {
-        TodoTask newTask = new TodoTask(titleText.getText());
-        taskTable.getItems().add(newTask);
+        /*
+        TableviewList newTask = new TableviewList(titleText.getText());
+        listTable.getItems().add(newTask);
 
         Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("TodoGUI.fxml")));
         Scene dataTableScene = new Scene(dataTableParent);
@@ -113,16 +127,20 @@ public class Controller implements Initializable
 
         window.setScene(dataTableScene);
         window.show();
+        */
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         //set up the columns in the table
-        taskTitle.setCellValueFactory(new PropertyValueFactory<TodoTask, String>("Title"));
+        listStatusColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Status"));
+        listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Description"));
+        listDueDateColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, LocalDate>("DueDate"));
+
 
         //load dummy data
-        taskTable.setItems(getTasks());
+        //taskTable.setItems(getTasks());
 
         //Update the table to allow for the first and last name fields
         //to be editable
@@ -135,14 +153,35 @@ public class Controller implements Initializable
 
         //Disable the detailed person view button until a row is selected
         //this.detailedPersonViewButton.setDisable(true);
+
+        // Allow texts in cells to be editable
+        listTable.setEditable(true);
+        listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
-    public ObservableList<TodoTask> getTasks()
+    /*
+    public ObservableList<TableviewList> getTasks()
     {
-        ObservableList<TodoTask> task = FXCollections.observableArrayList();
-        task.add(new TodoTask("Tasks"));
+        //ObservableList<TableviewList> task = FXCollections.observableArrayList();
+        //task.add(new TableviewList("Tasks"));
 
         return task;
+    }
+
+     */
+
+    public void newItemButtonPressed()
+    {
+        TableviewList newItem = new TableviewList(textDescriptionTextField.getText(), dueDateTextField.getValue());
+
+        // Loops through items then add to end of list
+        listTable.getItems().add(newItem);
+    }
+
+    public void changeDescription(TableColumn.CellEditEvent editCell)
+    {
+        TableviewList descriptionSelected = listTable.getSelectionModel().getSelectedItem();
+        descriptionSelected.setDescription(editCell.getNewValue().toString());
     }
 
 }
