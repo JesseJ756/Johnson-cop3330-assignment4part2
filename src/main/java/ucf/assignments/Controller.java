@@ -39,6 +39,7 @@ public class Controller implements Initializable
     @FXML private DatePicker dueDateTextField;
 
     @FXML private Button newItemButton;
+    @FXML private Button deleteItemButton;
 
 
     public void newListButtonPushed(javafx.event.ActionEvent event) throws IOException
@@ -149,7 +150,7 @@ public class Controller implements Initializable
         //lastNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //This will allow the table to select multiple rows at once
-        //tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //listTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         //Disable the detailed person view button until a row is selected
         //this.detailedPersonViewButton.setDisable(true);
@@ -157,6 +158,9 @@ public class Controller implements Initializable
         // Allow texts in cells to be editable
         listTable.setEditable(true);
         listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        //listDueDateColumn.setEditable(true);
+        //listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        //listDueDateColumn.setOnEditCommit(event -> event.getRowValue().setDueDate(event.getNewValue()));
     }
 
     /*
@@ -183,5 +187,41 @@ public class Controller implements Initializable
         TableviewList descriptionSelected = listTable.getSelectionModel().getSelectedItem();
         descriptionSelected.setDescription(editCell.getNewValue().toString());
     }
+
+    public void changeDueDate(TableColumn.CellEditEvent editCell)
+    {
+        TableviewList dueDateSelected = listTable.getSelectionModel().getSelectedItem();
+        dueDateSelected.setDueDate(editCell.getNewValue().toString());
+    }
+
+    public void deleteItemButtonPressed()
+    {
+        ObservableList<TableviewList> tempItemsList, selectedItems;
+        tempItemsList = listTable.getItems();
+
+        selectedItems = listTable.getSelectionModel().getSelectedItems();
+
+        for(TableviewList items: selectedItems)
+        {
+            tempItemsList.remove(items);
+        }
+    }
+
+    public void clearListButtonPressed()
+    {
+        ObservableList<TableviewList> tempItemsList;
+        tempItemsList = listTable.getItems();
+
+        tempItemsList.clear();
+
+        /*
+        for(TableviewList item: tempItemsList)
+        {
+            tempItemsList.remove(item);
+        }
+
+         */
+    }
+
 
 }

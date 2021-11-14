@@ -44,18 +44,19 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <Button layoutX="586.0" layoutY="53.0" mnemonicParsing="false" text="Clear List" />
+            <Button layoutX="610.0" layoutY="49.0" mnemonicParsing="false" onAction="#clearListButtonPressed" text="Clear List" />
+            <Button layoutX="520.0" layoutY="49.0" mnemonicParsing="false" onAction="#deleteItemButtonPressed" text="Delete Item" />
          </children>
       </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="698.0">
          <children>
             <SplitPane layoutX="18.0" layoutY="13.0" prefHeight="361.0" prefWidth="662.0">
               <items>
-                  <TableView fx:id="listTable" prefHeight="314.0" prefWidth="301.0">
+                  <TableView fx:id="listTable" prefHeight="314.0" prefWidth="660.0">
                      <columns>
                         <TableColumn fx:id="listStatusColumn" prefWidth="50.0" text="Status" />
                         <TableColumn fx:id="listDescriptionColumn" minWidth="0.0" onEditCommit="#changeDescription" prefWidth="489.0" text="Description" />
-                        <TableColumn fx:id="listDueDateColumn" minWidth="0.0" prefWidth="121.0" text="Due Date" />
+                        <TableColumn fx:id="listDueDateColumn" minWidth="0.0" onEditCommit="#changeDueDate" prefWidth="121.0" text="Due Date" />
                      </columns>
                   </TableView>
               </items>
@@ -66,7 +67,7 @@
                      <children>
                         <Button fx:id="newItemButton" layoutX="536.0" layoutY="66.0" mnemonicParsing="false" onAction="#newItemButtonPressed" prefHeight="26.0" prefWidth="71.0" text="New Item" />
                         <TextArea fx:id="textDescriptionTextField" layoutX="14.0" layoutY="17.0" prefHeight="75.0" prefWidth="470.0" promptText="Description" />
-                        <DatePicker fx:id="dueDateTextField" layoutX="505.0" layoutY="17.0" prefHeight="26.0" prefWidth="133.0" promptText="Due Date" />
+                        <DatePicker fx:id="dueDateTextField" cache="true" layoutX="497.0" layoutY="17.0" prefHeight="26.0" prefWidth="150.0" promptText="Due Date (YYYY-MM-DD)" />
                      </children>
                   </AnchorPane>
               </items>

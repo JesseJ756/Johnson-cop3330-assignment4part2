@@ -43,8 +43,8 @@ public class TableviewList
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(String dueDate) { // LocalDate -> String
+        this.dueDate = LocalDate.parse(dueDate); //  = dueDate
     }
 
     public CheckBox getStatus() {
