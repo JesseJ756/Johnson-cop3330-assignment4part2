@@ -38,6 +38,8 @@ public class Controller implements Initializable
     @FXML private TextArea textDescriptionTextField;
     @FXML private DatePicker dueDateTextField;
 
+    @FXML private Label counter;
+
     @FXML private Button newItemButton;
     @FXML private Button deleteItemButton;
 
@@ -134,11 +136,17 @@ public class Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        final int MAX_CHARS = 256 ;
+
         //set up the columns in the table
         listStatusColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Status"));
         listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Description"));
         listDueDateColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, LocalDate>("DueDate"));
 
+        textDescriptionTextField.setTextFormatter(new TextFormatter<String>(change ->
+                                                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
+
+        counter.textProperty().bind(textDescriptionTextField.textProperty().length().asString("%d"));
 
         //load dummy data
         //taskTable.setItems(getTasks());
@@ -159,7 +167,7 @@ public class Controller implements Initializable
         listTable.setEditable(true);
         listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         //listDueDateColumn.setEditable(true);
-        //listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        //listDueDateColumn.setCellFactory(editorProperty());
         //listDueDateColumn.setOnEditCommit(event -> event.getRowValue().setDueDate(event.getNewValue()));
     }
 
@@ -213,14 +221,6 @@ public class Controller implements Initializable
         tempItemsList = listTable.getItems();
 
         tempItemsList.clear();
-
-        /*
-        for(TableviewList item: tempItemsList)
-        {
-            tempItemsList.remove(item);
-        }
-
-         */
     }
 
 
