@@ -16,14 +16,15 @@ public class TableviewList
     private String trueString = "true";
     private CheckBox status;
     private SimpleStringProperty description;
-    private LocalDate dueDate;
+    //private LocalDate dueDate;
+    private SimpleStringProperty dueDate;
 
 
-    public TableviewList(String description, LocalDate dueDate)
+    public TableviewList(String description, String dueDate)
     {
         this.status = new CheckBox();
         this.description = new SimpleStringProperty(description);
-        this.dueDate = dueDate;
+        this.dueDate = new SimpleStringProperty(dueDate);
     }
 
     public String getDescription() {
@@ -39,12 +40,26 @@ public class TableviewList
         //this.description.set(description);
     }
 
-    public LocalDate getDueDate() {
+    /*public LocalDate getDueDate() {
         return dueDate;
     }
 
     public void setDueDate(String dueDate) { // LocalDate -> String
         this.dueDate = LocalDate.parse(dueDate); //  = dueDate
+    }
+
+     */
+
+    public String getDueDate() {
+        return dueDate.get();
+    }
+
+    public SimpleStringProperty dueDateProperty() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = new SimpleStringProperty(dueDate);
     }
 
     public CheckBox getStatus() {

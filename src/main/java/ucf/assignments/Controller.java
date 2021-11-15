@@ -16,12 +16,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -30,15 +33,16 @@ public class Controller implements Initializable
     @FXML private TableView<TableviewList> listTable;
     @FXML private TableColumn<TableviewList, String> listDescriptionColumn;
     @FXML private TableColumn<TableviewList, String> listStatusColumn;
-    @FXML private TableColumn<TableviewList, LocalDate> listDueDateColumn;
+    @FXML private TableColumn<TableviewList, String> listDueDateColumn;
 
 
     @FXML private TextField titleText;
 
     @FXML private TextArea textDescriptionTextField;
-    @FXML private DatePicker dueDateTextField;
+    @FXML private TextField dueDateTextField;
 
     @FXML private Label counter;
+    @FXML private Text invalidDate;
 
     @FXML private Button newItemButton;
     @FXML private Button deleteItemButton;
@@ -141,7 +145,7 @@ public class Controller implements Initializable
         //set up the columns in the table
         listStatusColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Status"));
         listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Description"));
-        listDueDateColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, LocalDate>("DueDate"));
+        listDueDateColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("DueDate"));
 
         textDescriptionTextField.setTextFormatter(new TextFormatter<String>(change ->
                                                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
@@ -167,7 +171,8 @@ public class Controller implements Initializable
         listTable.setEditable(true);
         listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         //listDueDateColumn.setEditable(true);
-        //listDueDateColumn.setCellFactory(editorProperty());
+        listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
         //listDueDateColumn.setOnEditCommit(event -> event.getRowValue().setDueDate(event.getNewValue()));
     }
 
@@ -184,11 +189,74 @@ public class Controller implements Initializable
 
     public void newItemButtonPressed()
     {
-        TableviewList newItem = new TableviewList(textDescriptionTextField.getText(), dueDateTextField.getValue());
+        TableviewList newItem = null;
+        int isDueDateValid = validDueDateCheck(dueDateTextField.getText());
 
-        // Loops through items then add to end of list
-        listTable.getItems().add(newItem);
+        if(isDueDateValid == 1)
+        {
+            invalidDate.setFill(Color.TRANSPARENT);
+            newItem = new TableviewList(textDescriptionTextField.getText(), dueDateTextField.getText());
+
+            // Loops through items then add to end of list
+            listTable.getItems().add(newItem);
+        }
+        else
+        {
+            invalidDate.setFill(Color.RED);
+            System.out.println("Invalid due date format detected.");
+        }
     }
+
+    public int validDueDateCheck(String date)
+    {
+        boolean validDateFormat;
+        int month;
+        int day;
+        int dayInMonth = 0;
+
+        System.out.println(date);
+
+        validDateFormat = date.matches("\\d{4}-\\d{2}-\\d{2}");
+
+        if(!validDateFormat)
+            return 0;
+
+        month = Integer.parseInt(date.substring(5, 7));
+        day = Integer.parseInt(date.substring(8));
+
+        if(month < 1 || month > 12)
+            return 0;
+
+        switch(month)
+        {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                dayInMonth = 31;
+                break;
+            case 2:
+                dayInMonth = 28;
+                break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                dayInMonth = 30;
+                break;
+            default:
+                return 0;
+        }
+
+        if(day > 0 && day <= dayInMonth)
+            return 1;
+
+        return 0;
+    }
+
 
     public void changeDescription(TableColumn.CellEditEvent editCell)
     {
