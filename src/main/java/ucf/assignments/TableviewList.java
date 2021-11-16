@@ -18,7 +18,7 @@ public class TableviewList
 
     public TableviewList(String description, String dueDate)
     {
-        this.status = new CheckBox();
+        this.status = new CheckBox(""); //new CheckBox()
         this.description = new SimpleStringProperty(description);
         this.dueDate = new SimpleStringProperty(dueDate);
     }
