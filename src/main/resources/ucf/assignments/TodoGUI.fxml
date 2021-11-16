@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -27,15 +28,15 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem fx:id="openMenuItem" mnemonicParsing="false" onAction="#openFileMenuItemPressed" text="Open..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveFileMenuItemPressed" text="Save" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem mnemonicParsing="false" onAction="#deleteItemButtonPressed" text="Delete Item" />
+                        <MenuItem mnemonicParsing="false" onAction="#clearListButtonPressed" text="Clear List" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -79,7 +80,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="dueDateTextField" layoutX="484.0" layoutY="18.0" promptText="Due Date (YYYY-MM-DD)" />
-                        <Text fx:id="invalidDate" fill="TRANSPARENT" layoutX="590.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Invalid Date" wrappingWidth="67.125244140625">
+                        <Text fx:id="invalidDate" fill="TRANSPARENT" layoutX="590.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Invalid Date" wrappingWidth="67.125244140625">
                            <font>
                               <Font size="10.0" />
                            </font>

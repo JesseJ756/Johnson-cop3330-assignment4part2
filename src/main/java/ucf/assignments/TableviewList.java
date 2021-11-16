@@ -27,6 +27,13 @@ public class TableviewList
         this.dueDate = new SimpleStringProperty(dueDate);
     }
 
+    public TableviewList()
+    {
+        this.status = null;
+        this.description = null;
+        this.dueDate = null;
+    }
+
     public String getDescription() {
         return description.get();
     }
@@ -66,8 +73,12 @@ public class TableviewList
         return status;
     }
 
-    public void setStatus(CheckBox status) {
-        this.status = status;
+    public void setStatus(String status) { // Checkbox status
+        CheckBox tempCheckBox = new CheckBox();
+
+        tempCheckBox.setSelected(Boolean.parseBoolean(status));
+
+        this.status = tempCheckBox;
     }
 
     /*

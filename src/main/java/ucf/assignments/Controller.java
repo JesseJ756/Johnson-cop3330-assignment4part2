@@ -18,15 +18,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class Controller implements Initializable
 {
@@ -43,6 +48,7 @@ public class Controller implements Initializable
 
     @FXML private Label counter;
     @FXML private Text invalidDate;
+    @FXML private MenuItem openMenuItem;
 
     @FXML private Button newItemButton;
     @FXML private Button deleteItemButton;
@@ -173,6 +179,8 @@ public class Controller implements Initializable
         //listDueDateColumn.setEditable(true);
         listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
+
+
         //listDueDateColumn.setOnEditCommit(event -> event.getRowValue().setDueDate(event.getNewValue()));
     }
 
@@ -290,6 +298,59 @@ public class Controller implements Initializable
 
         tempItemsList.clear();
     }
+
+    public void openFileMenuItemPressed() throws IOException {
+        int i;
+        FileChooser file = new FileChooser();
+        File selectedFile = file.showOpenDialog(null);
+        CheckBox tempCheckBox = new CheckBox();
+
+        if(selectedFile != null)
+        {
+            System.out.println("File selected");
+            System.out.println(selectedFile);
+
+            Collection<TableviewList> allText = Files.readAllLines(selectedFile.toPath()).stream().map(line -> {
+                String[] details = line.split(";;");
+                TableviewList tempTableviewList = new TableviewList();
+
+                //tempCheckBox.setSelected(Boolean.parseBoolean(details[0]));
+                //tempTableviewList.setStatus(tempCheckBox);
+                tempTableviewList.setStatus(details[0]);
+                tempTableviewList.setDescription(details[1]);
+                tempTableviewList.setDueDate(details[2]);
+                return tempTableviewList;
+            }).collect(Collectors.toList());
+
+            ObservableList<TableviewList> itemListToObserveList = FXCollections.observableArrayList(allText);
+
+            listTable.setItems(itemListToObserveList);
+        }
+        else
+        {
+            System.out.println("File not valid");
+        }
+    }
+
+    public void saveFileMenuItemPressed() throws IOException
+    {
+        ObservableList<TableviewList> itemsList;
+        FileChooser file = new FileChooser();
+        File selectedFile = file.showSaveDialog(null);
+
+        if(selectedFile != null)
+        {
+            System.out.println("selected file");
+            itemsList = listTable.getItems();
+        }
+        else
+        {
+            System.out.println("Could not select file to save.");
+        }
+
+    }
+
+    //public void
 
 
 }
