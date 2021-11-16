@@ -49,6 +49,7 @@ public class Controller implements Initializable
         listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("Description")); // <TableviewList, String>
         listDueDateColumn.setCellValueFactory(new PropertyValueFactory<>("DueDate")); // <TableviewList, String>
 
+        // Limits number of characters in description text area
         textDescriptionTextField.setTextFormatter(new TextFormatter<String>(change ->
                                                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
 
@@ -58,6 +59,7 @@ public class Controller implements Initializable
         //listTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Allow texts in cells to be editable
+        // description and due date are editable
         listTable.setEditable(true);
         listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -70,15 +72,15 @@ public class Controller implements Initializable
 
         if(isDueDateValid == 1)
         {
-            invalidDate.setFill(Color.TRANSPARENT);
+            invalidDate.setFill(Color.TRANSPARENT); // Sets "invalid Date" to be transparent
             newItem = new TableviewList(textDescriptionTextField.getText(), dueDateTextField.getText());
 
-            // Loops through items then add to end of list
+            // Add item to end of list
             listTable.getItems().add(newItem);
         }
         else
         {
-            invalidDate.setFill(Color.RED);
+            invalidDate.setFill(Color.RED); // Allows user to see "invalid Date"
             System.out.println("Invalid due date format detected.");
         }
     }
@@ -92,6 +94,7 @@ public class Controller implements Initializable
 
         System.out.println(date);
 
+        // Valid date if and only if YYYY-MM-DD
         validDateFormat = date.matches("\\d{4}-\\d{2}-\\d{2}");
 
         if(!validDateFormat)
@@ -103,6 +106,7 @@ public class Controller implements Initializable
         if(month < 1 || month > 12)
             return 0;
 
+        // Gives how many days in that month
         switch(month)
         {
             case 1:
@@ -133,7 +137,6 @@ public class Controller implements Initializable
         return 0;
     }
 
-
     public void changeDescription(TableColumn.CellEditEvent editCell)
     {
         TableviewList descriptionSelected = listTable.getSelectionModel().getSelectedItem();
@@ -151,6 +154,7 @@ public class Controller implements Initializable
         ObservableList<TableviewList> tempItemsList, selectedItems;
         tempItemsList = listTable.getItems();
 
+        // Gets selected row
         selectedItems = listTable.getSelectionModel().getSelectedItems();
 
         for(TableviewList items: selectedItems)
@@ -169,6 +173,7 @@ public class Controller implements Initializable
 
     public void openFileMenuItemPressed() throws IOException {
         int i;
+        // Opens window for user to select file
         FileChooser file = new FileChooser();
         File selectedFile = file.showOpenDialog(null);
 
@@ -178,6 +183,7 @@ public class Controller implements Initializable
             System.out.println(selectedFile);
 
             Collection<TableviewList> allText = Files.readAllLines(selectedFile.toPath()).stream().map(line -> {
+                // Data String is separated by ";;"fd
                 String[] details = line.split(";;");
                 TableviewList tempTableviewList = new TableviewList();
 
