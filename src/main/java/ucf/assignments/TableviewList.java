@@ -8,15 +8,11 @@ package ucf.assignments;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
 
-import java.awt.*;
-import java.time.LocalDate;
-
 public class TableviewList
 {
-    private String trueString = "true";
+    //private String trueString = "true";
     private CheckBox status;
     private SimpleStringProperty description;
-    //private LocalDate dueDate;
     private SimpleStringProperty dueDate;
 
 
@@ -47,16 +43,6 @@ public class TableviewList
         //this.description.set(description);
     }
 
-    /*public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(String dueDate) { // LocalDate -> String
-        this.dueDate = LocalDate.parse(dueDate); //  = dueDate
-    }
-
-     */
-
     public String getDueDate() {
         return dueDate.get();
     }
@@ -80,22 +66,4 @@ public class TableviewList
 
         this.status = tempCheckBox;
     }
-
-    /*
-    public String getTitle()
-    {
-        return title.get();
-    }
-
-    public SimpleStringProperty titleProperty()
-    {
-        return title;
-    }
-
-    public void setTitle(String title)
-    {
-        this.title.set(title);
-    }
-
-     */
 }

@@ -8,28 +8,19 @@ package ucf.assignments;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -40,108 +31,13 @@ public class Controller implements Initializable
     @FXML private TableColumn<TableviewList, String> listStatusColumn;
     @FXML private TableColumn<TableviewList, String> listDueDateColumn;
 
-
-    @FXML private TextField titleText;
-
     @FXML private TextArea textDescriptionTextField;
     @FXML private TextField dueDateTextField;
-
     @FXML private Label counter;
     @FXML private Text invalidDate;
-    @FXML private MenuItem openMenuItem;
 
-    @FXML private Button newItemButton;
-    @FXML private Button deleteItemButton;
-
-
-    public void newListButtonPushed(javafx.event.ActionEvent event) throws IOException
-    {
-        /*
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MakeTaskGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-        */
-    }
-
-    public void deleteItemButtonPushed(javafx.event.ActionEvent event)
-    {
-
-        // delete item from selected item from table view
-        // move all lower items up
-
-    }
-
-    public void deleteTaskButtonPushed(javafx.event.ActionEvent event)
-    {
-
-        // delete item from selected task from table view
-        // move all lower task up
-
-    }
-
-    public void returnFromNewListAdd(javafx.event.ActionEvent event) throws IOException
-    {
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ToDoGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-    }
-
-    public void newItemButtonPushed(javafx.event.ActionEvent event) throws IOException
-    {
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MakeItemGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-    }
-
-    public void returnFromNewItemAdd(javafx.event.ActionEvent event) throws IOException
-    {
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ItemInListGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-    }
-
-    public void returnFromItems(javafx.event.ActionEvent event) throws IOException
-    {
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("TodoGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-    }
-
-    public void addTaskButtonPushed(javafx.event.ActionEvent event) throws IOException
-    {
-        /*
-        TableviewList newTask = new TableviewList(titleText.getText());
-        listTable.getItems().add(newTask);
-
-        Parent dataTableParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("TodoGUI.fxml")));
-        Scene dataTableScene = new Scene(dataTableParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(dataTableScene);
-        window.show();
-        */
-    }
+    //@FXML private Button newItemButton;
+    //@FXML private Button deleteItemButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -149,55 +45,27 @@ public class Controller implements Initializable
         final int MAX_CHARS = 256 ;
 
         //set up the columns in the table
-        listStatusColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Status"));
-        listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("Description"));
-        listDueDateColumn.setCellValueFactory(new PropertyValueFactory<TableviewList, String>("DueDate"));
+        listStatusColumn.setCellValueFactory(new PropertyValueFactory<>("Status")); // <TableviewList, String>
+        listDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("Description")); // <TableviewList, String>
+        listDueDateColumn.setCellValueFactory(new PropertyValueFactory<>("DueDate")); // <TableviewList, String>
 
         textDescriptionTextField.setTextFormatter(new TextFormatter<String>(change ->
                                                     change.getControlNewText().length() <= MAX_CHARS ? change : null));
 
         counter.textProperty().bind(textDescriptionTextField.textProperty().length().asString("%d"));
 
-        //load dummy data
-        //taskTable.setItems(getTasks());
-
-        //Update the table to allow for the first and last name fields
-        //to be editable
-        //tableView.setEditable(true);
-        //firstNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //lastNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
         //This will allow the table to select multiple rows at once
         //listTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        //Disable the detailed person view button until a row is selected
-        //this.detailedPersonViewButton.setDisable(true);
 
         // Allow texts in cells to be editable
         listTable.setEditable(true);
         listDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //listDueDateColumn.setEditable(true);
         listDueDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
-
-
-        //listDueDateColumn.setOnEditCommit(event -> event.getRowValue().setDueDate(event.getNewValue()));
     }
-
-    /*
-    public ObservableList<TableviewList> getTasks()
-    {
-        //ObservableList<TableviewList> task = FXCollections.observableArrayList();
-        //task.add(new TableviewList("Tasks"));
-
-        return task;
-    }
-
-     */
 
     public void newItemButtonPressed()
     {
-        TableviewList newItem = null;
+        TableviewList newItem; // = null
         int isDueDateValid = validDueDateCheck(dueDateTextField.getText());
 
         if(isDueDateValid == 1)
@@ -220,7 +88,7 @@ public class Controller implements Initializable
         boolean validDateFormat;
         int month;
         int day;
-        int dayInMonth = 0;
+        int dayInMonth; // = 0
 
         System.out.println(date);
 
@@ -303,7 +171,6 @@ public class Controller implements Initializable
         int i;
         FileChooser file = new FileChooser();
         File selectedFile = file.showOpenDialog(null);
-        CheckBox tempCheckBox = new CheckBox();
 
         if(selectedFile != null)
         {
@@ -314,12 +181,11 @@ public class Controller implements Initializable
                 String[] details = line.split(";;");
                 TableviewList tempTableviewList = new TableviewList();
 
-                //tempCheckBox.setSelected(Boolean.parseBoolean(details[0]));
-                //tempTableviewList.setStatus(tempCheckBox);
                 tempTableviewList.setStatus(details[0]);
                 tempTableviewList.setDescription(details[1]);
                 tempTableviewList.setDueDate(details[2]);
                 return tempTableviewList;
+
             }).collect(Collectors.toList());
 
             ObservableList<TableviewList> itemListToObserveList = FXCollections.observableArrayList(allText);
@@ -351,6 +217,5 @@ public class Controller implements Initializable
     }
 
     //public void
-
 
 }
